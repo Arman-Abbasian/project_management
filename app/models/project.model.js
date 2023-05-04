@@ -1,19 +1,16 @@
 const { default: mongoose } = require("mongoose");
 
-const UserSchema=new mongoose.Schema({
-    first_name:{type:String},
-    last_name:{type:String},
-    username:{type:String,reqiured:true,unique:true},
-    mobile:{type:String,reqiured:true,unique:true},
-    email:{type:String,reqiured:true,unique:true},
-    password:{type:String,reqiured:true},
-    roles:{type:[String],default:["USER"]},
-    skills:{type:[String],reqiured:[]},
-    teams:{type:[mongoose.Types.ObjectId],default:[]},
+const ProjectSchema=new mongoose.Schema({
+    title:{type:String,reqiured:true},
+    text:{type:String},
+    image:{type:String,default:"/defaults/default.png"},
+    owner:{type:mongoose.Types.ObjectId,reqiured:true},
+   team:{type:mongoose.Types.ObjectId},
+   private:{type:Boolean,default:true}
 },{
     timestamps:true
 })
-const userModel=mongoose.model("user",UserSchema);
+const projectModel=mongoose.model("project",ProjectSchema);
 module.exports={
-    userModel
+    projectModel
 }
