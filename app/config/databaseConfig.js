@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+
 function configDataBase(DB_URL){
 mongoose.set("strictQuery",true);
 mongoose.connect(DB_URL)

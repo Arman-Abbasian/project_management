@@ -1,8 +1,8 @@
 const {Router}=require("express");
-const authRoutes = require("./auth.routes");
-const projectRoutes = require("./project.routes");
-const teamRoutes = require("./team.routes");
-const userRoutes = require("./user.routes");
+const {authRoutes} = require("./auth.routes");
+const {projectRoutes} = require("./project.routes");
+const {teamRoutes} = require("./team.routes");
+const {userRoutes} = require("./user.routes");
 const router=Router();
 router.get("/",(req,res,next)=>{
     return res.json({
