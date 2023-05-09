@@ -8,7 +8,7 @@ const TeamSchema=new mongoose.Schema({
 },{
     timestamps:true
 })
-const teamtModel=mongoose.model("team",TeamSchema);
+const TeamtModel=mongoose.model("team",TeamSchema);
 module.exports={
-    teamtModel
+    TeamtModel
 }
