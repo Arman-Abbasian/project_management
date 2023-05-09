@@ -3,4 +3,7 @@ function hashData(data){
 const salt=bcrypt.genSaltSync(10);
 return bcrypt.hashSync(data,salt)
 };
-module.exports={hashData}
+function compareHash(data,hashedData){
+    return bcrypt.compareSync(data,hashedData)
+}
+module.exports={hashData,compareHash}

@@ -1,6 +1,5 @@
 const {body}=require('express-validator');
-const { UserModel } = require('../../models/user.model');
-const { TeamtModel } = require('../../models/team.model');
+
 
 function registerValidator(){
     return[
@@ -9,7 +8,7 @@ function registerValidator(){
         //last_name field validation
         body("last_name").optional().isLength({min:2,max:20}).withMessage("last name must be between 2 until 20 character"),
         //username field validation
-        body("username").custom(async(value,ctx)=>{
+        body("username").notEmpty().withMessage("please enter the username").custom(async(value,ctx)=>{
             if(value){
                 const usernameRegex=/^[a-z][a-z0-9\.\_]{3,}/gi;
                 if(usernameRegex.test(value)){
@@ -31,8 +30,8 @@ function registerValidator(){
             if(value!=ctx.req?.body?.confirm_password) throw "cofirm password must match"
             return true
         }),
-        body("roles").custom((roles)=>{
-            roles.forEach(role=>{
+        body("roles").optional().custom((roles)=>{
+            roles?.forEach(role=>{
                 if(role==="USER"||role==="ADMIN") return true;
                 throw "please select USER or ADMIN"
             })
