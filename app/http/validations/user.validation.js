@@ -38,4 +38,14 @@ function registerValidator(){
         }),
     ]
 }
-module.exports={registerValidator}
+function updateUserValidation(){
+    return[
+        //first_name field validation
+        body("first_name").optional().isLength({min:2,max:15}).withMessage("first name must be between 2 until 15 character"),
+        //last_name field validation
+        body("last_name").optional().isLength({min:2,max:20}).withMessage("last name must be between 2 until 20 character"),
+        body("skills").optional().isArray().withMessage("format is wrong"),
+        body("skills.*").notEmpty().withMessage("please send skills")
+    ] 
+}
+module.exports={registerValidator,updateUserValidation}

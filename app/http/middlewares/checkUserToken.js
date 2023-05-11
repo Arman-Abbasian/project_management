@@ -7,7 +7,8 @@ async function checkUserToken(req,res,next){
 try {
     const authorization=req?.headers?.authorization;
     if(!authorization) throw authError;
-    const token=authorization.split(" ")?.[1];
+    const [bearer,token]=authorization.split(" ");
+    if(!bearer || bearer.toLowerCase()!=="bearer") throw authError
     if(!token) throw authError;
     const username=verifyToken(token)
     const user=await UserModel.findOne({username},{password:0});

@@ -1,3 +1,4 @@
+const { check } = require("express-validator");
 const { TeamtModel } = require("../../models/team.model");
 const { UserModel } = require("../../models/user.model");
 const { hashData } = require("../../modules/hashData");
@@ -31,6 +32,30 @@ class UserController{
                 message:"user added successfully",
             }
         })
+        } catch (error) {
+            next(error)
+        }
+    }
+    async updateProfile(req,res,next){
+        try {
+        const data={...req.body};
+        const {first_name,last_name,skills}=data;
+        const checkData={first_name,last_name,skills}
+        for (const key in checkData) {
+            if (checkData[key]===undefined) delete checkData[key]
+        }
+        console.log(req.user_id)
+        const updatedData=await UserModel.updateOne({_id:req.user._id},{$set:checkData});
+        if(updatedData.modifiedCount==1){
+            res.status(200).json({
+                status:res.statusCode,
+                data:{
+                    success:true,
+                    message:"data updated successfully"
+                }
+            })
+        }
+        throw {status:500,message:"data could not updated"}
         } catch (error) {
             next(error)
         }
