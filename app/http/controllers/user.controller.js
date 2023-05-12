@@ -60,6 +60,23 @@ class UserController{
             next(error)
         }
     }
+    async uploadUserProfileImage(req,res,next){
+        try {
+            const userID=req.user._id;
+            const filePath=req.file?.substring(7);
+            const result=await UserModel.updateOne({_id:userID},{$set:{profile_image:filePath}})
+            if(result.modifiedCount==0) throw({status:500,message:"server error"})
+            res.status(200).json({
+                status:res.statusCode,
+                data:{
+                    success:true,
+                    message:"image uploaded successfully"
+                }
+            })
+        } catch (error) {
+            next (error)
+        }
+    }
  }
  module.exports={
      UserController:new UserController()

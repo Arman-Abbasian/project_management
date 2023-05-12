@@ -1,5 +1,5 @@
 const {body}=require('express-validator');
-
+const path=require("path")
 
 function registerValidator(){
     return[
@@ -48,4 +48,19 @@ function updateUserValidation(){
         body("skills.*").notEmpty().withMessage("please send skills")
     ] 
 }
-module.exports={registerValidator,updateUserValidation}
+function userProfileImageValidation(){
+    return[
+        //first_name field validation
+        body("profile_image").custom((value,{req})=>{
+            if(Object.keys(req.file).length==0) throw "please upload a file"
+            const fileFormat=path.extname(req.file.originalname);
+            const allwoedFormats= [".png",".jpg",".jpeg",".webp",".gif"];
+            if(!allwoedFormats.includes(fileFormat)) throw "file format is not allowed"
+            const maxSize=2*1024*1024;
+            if(req.file.size>maxSize) throw "file size is exceed";
+            return true
+        })
+        
+    ] 
+}
+module.exports={registerValidator,updateUserValidation,userProfileImageValidation}
