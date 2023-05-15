@@ -10,7 +10,7 @@ const ProjectSchema=new mongoose.Schema({
 },{
     timestamps:true
 })
-const projectModel=mongoose.model("project",ProjectSchema);
+const ProjectModel=mongoose.model("project",ProjectSchema);
 module.exports={
-    projectModel
+    ProjectModel
 }
