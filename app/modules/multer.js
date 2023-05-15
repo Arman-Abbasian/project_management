@@ -4,7 +4,6 @@ const path=require("path");
 
 const storage=multer.diskStorage({
     destination:(req,file,cb)=>{
-        console.log(createImageDirectory(req))
         cb(null,createImageDirectory(req))
     },
     filename:(req,file,cb)=>{

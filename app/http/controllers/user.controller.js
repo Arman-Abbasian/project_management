@@ -63,8 +63,9 @@ class UserController{
     async uploadUserProfileImage(req,res,next){
         try {
             const userID=req.user._id;
-            const filePath=req.file?.substring(7);
-            const result=await UserModel.updateOne({_id:userID},{$set:{profile_image:filePath}})
+            const filePath=req.file?.path?.substring(7);
+            const imageLink=req.protocol+"://"+req.get("host")+"/"+filePath.replace(/[\\\\]/gm,"/")
+            const result=await UserModel.updateOne({_id:userID},{$set:{profile_image:imageLink}})
             if(result.modifiedCount==0) throw({status:500,message:"server error"})
             res.status(200).json({
                 status:res.statusCode,
