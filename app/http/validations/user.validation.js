@@ -50,7 +50,7 @@ function updateUserValidation(){
 }
 function userProfileImageValidation(){
     return[
-        //first_name field validation
+        //image field validation
         body("profile_image").custom((value,{req})=>{
             if(Object.keys(req.file).length==0) throw "please upload a file"
             const fileFormat=path.extname(req.file.originalname);
