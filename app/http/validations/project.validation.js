@@ -10,8 +10,8 @@ function createProjectValidation(){
         .isLength({min:20,max:50}).withMessage("the introduction of project must be between 20 an 50 character"),
         //image field validation
         body("project_image").custom((value,{req})=>{
-            const imageFile=req.files.project_image
-            if(Object.keys(imageFile).length==0) throw "please upload the project image"
+            const imageFile=req?.files?.project_image;
+            if(!imageFile||Object.keys(imageFile).length==0) throw "please upload the project image"
             //check the format of file
             const fileFormat=path.extname(imageFile.name);
             const allwoedFormats= [".png",".jpg",".jpeg",".webp",".gif"];
