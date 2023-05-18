@@ -1,4 +1,5 @@
 const { ProjectModel } = require("../../models/project.model");
+const { expressFileuploadEdited } = require("../../modules/editProjectImage");
 
 class ProjectController{
     //methods 
@@ -86,6 +87,25 @@ class ProjectController{
         res.status(200).json({
             success:true,
             message:"project edited successfully",
+        })
+        } catch (error) {
+            next(error)
+        }
+    }
+    async editProjectImageById(req,res,next){
+        try {
+            const user=req.user._id;
+            const projectId=req.params.id;
+            const project=await ProjectModel.findOne({owner:user,_id:projectId})
+            if(!project) throw{status:404,message:"project not found"}
+            expressFileuploadEdited(req,project);
+            let {image}=req.body;
+            const updatedProject=await ProjectModel.updateOne
+            ({owner:user,_id:projectId},{$set:{image:image}})
+            if(updatedProject.modifiedCount==0) throw{status:400,message:"update did not implement"}
+        res.status(200).json({
+            success:true,
+            message:"project image changed successfully",
         })
         } catch (error) {
             next(error)
