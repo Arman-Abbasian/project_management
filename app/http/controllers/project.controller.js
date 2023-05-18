@@ -68,6 +68,29 @@ class ProjectController{
             next(error)
         }
     }
+    async editProjectById(req,res,next){
+        const vorbiddenValue=[""," ",NaN,0,'0',undefined,null]
+        try {
+            const user=req.user._id;
+            const projectId=req.params.id;
+            let data={...req.body};
+            if(data.title===undefined) delete data.title
+            if(data.text===undefined)  delete data.text
+            const tagsArray=data?.tags?.filter(element => {
+                if(!vorbiddenValue.includes(element)) return element
+            });
+           data.tags=tagsArray
+            if(data.tags?.length==0)  delete data.tags
+            const project=await ProjectModel.updateOne({owner:user,_id:projectId},{$set:data})
+            if(project.modifiedCount==0) throw{status:400,message:"update did not implement"}
+        res.status(200).json({
+            success:true,
+            message:"project edited successfully",
+        })
+        } catch (error) {
+            next(error)
+        }
+    }
  }
  module.exports={
      ProjectController:new ProjectController()

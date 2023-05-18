@@ -1,8 +1,8 @@
 const { default: mongoose } = require("mongoose");
 
 const ProjectSchema=new mongoose.Schema({
-    title:{type:String,reqiured:true},
-    text:{type:String},
+    title:{type:String,reqiured:true,min:3,max:20},
+    text:{type:String,reqiured:true,min:20,max:50},
     image:{type:String,default:"/defaults/default.png"},
     owner:{type:mongoose.Types.ObjectId,reqiured:true},
    team:{type:mongoose.Types.ObjectId},
