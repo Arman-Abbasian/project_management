@@ -22,6 +22,19 @@ class TeamController{
        }
        
     }
+    async getAllTeams(req,res,next){
+        const owner=req.user._id;
+        const teams=await TeamtModel.find({owner:owner})
+        if(!teams) throw {status:404,message:"could not find any team"}
+        res.status(200).json({
+            status:res.statusCode,
+            data:{
+                teams,
+                success:true,
+                message:"teams fetched successfully"
+            }
+        })
+    }
  }
  module.exports={
      TeamController:new TeamController()
