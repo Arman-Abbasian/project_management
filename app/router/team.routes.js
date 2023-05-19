@@ -9,6 +9,7 @@ router.post("/create",checkUserToken,createTeamValidation(),expressValidator,Tea
 router.get("/getAllTeams",checkUserToken,TeamController.getAllTeams)
 router.get("/me",checkUserToken,TeamController.getMyTeams)
 router.get("/:id",checkUserToken,mongoIdValidation(),expressValidator,TeamController.getTeamById)
+router.delete("/:id",checkUserToken,mongoIdValidation(),expressValidator,TeamController.deleteTeamById)
 module.exports={
     teamRoutes:router
 }

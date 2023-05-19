@@ -71,6 +71,23 @@ class TeamController{
             next(error)
         }
     }
+    async deleteTeamById(req,res,next){
+        try {
+            const userId=req.user._id;
+            const teamId=req.params.id;
+            const teams=await TeamtModel.findOneAndDelete({owner:userId,_id:teamId})
+            if(!teams) throw {status:404,message:"any team not found"}
+            res.status(200).json({
+                status:res.statusCode,
+                data:{
+                    success:true,
+                    message:"team deleted successfully"
+                }
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
  }
  module.exports={
      TeamController:new TeamController()
