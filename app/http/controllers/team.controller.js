@@ -35,6 +35,42 @@ class TeamController{
             }
         })
     }
+    async getTeamById(req,res,next){
+        try {
+            const teamId=req.params.id;
+            const team=await TeamtModel.findById(teamId);
+            if(!team) throw {status:404,message:"team not found"}
+            res.status(200).json({
+                status:res.statusCode,
+                data:{
+                    team,
+                    success:true,
+                    message:"team finded successfully"
+                }
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+    async getMyTeams(req,res,next){
+        try {
+            const userId=req.user._id;
+            const teams=await TeamtModel.find({
+                $or:[{owner:userId},{users:userId}]
+            });
+            if(!teams) throw {status:404,message:"any team not found"}
+            res.status(200).json({
+                status:res.statusCode,
+                data:{
+                    teams,
+                    success:true,
+                    message:"team finded successfully"
+                }
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
  }
  module.exports={
      TeamController:new TeamController()

@@ -5,7 +5,7 @@ function mongoIdValidation(){
     return[
         //title filed validation
         param("id").notEmpty().withMessage("please enter your projectId")
-        .isMongoId().withMessage("your project is not found"),
+        .isMongoId().withMessage("your data is not found"),
     ]
 }
 module.exports={
