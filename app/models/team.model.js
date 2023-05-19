@@ -1,8 +1,8 @@
-const { default: mongoose } = require("mongoose");
+const { default: mongoose, trusted } = require("mongoose");
 
 const TeamSchema=new mongoose.Schema({
-    name:{type:String,reqiured:true},
-    description:{type:String},
+    name:{type:String,reqiured:true,reqiured:true,unique:true},
+    description:{type:String,reqiured:true},
     users:{type:[mongoose.Types.ObjectId],default:[]},
     owner:{type:mongoose.Types.ObjectId,reqiured:true},
 },{
