@@ -7,6 +7,7 @@ const { uploadUserProfileImageWithMulter } = require("../modules/multer");
 const router=Router();
 router.post("/register",registerValidator(),expressValidator,UserController.register);
 router.put("/updateProfile",checkUserToken,updateUserValidation(),expressValidator,UserController.updateProfile);
+router.get("/allrequests",checkUserToken,UserController.getAllRequests)
 router.post("/profile_image",checkUserToken,uploadUserProfileImageWithMulter.single("profile_image"),
 userProfileImageValidation(),expressValidator,UserController.uploadUserProfileImage);
 

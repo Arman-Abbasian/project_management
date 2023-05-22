@@ -19,7 +19,7 @@ const UserSchema=new mongoose.Schema({
     teams:{type:[mongoose.Types.ObjectId],default:[]},
     profile_image:{type:String},
     token:{type:String,default:""},
-    inviteRequest:{type:[IviteRequest]}
+    inviteRequest:{type:[IviteRequest],default:[]}
 },{
     timestamps:true
 })

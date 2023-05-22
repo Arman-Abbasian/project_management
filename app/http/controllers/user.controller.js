@@ -78,6 +78,21 @@ class UserController{
             next (error)
         }
     }
+    async getAllRequests(req,res,next){
+        try {
+            const userID=req.user._id;
+            const allrequests=await UserModel.findOne({_id:userID},{inviteRequest:1})
+            return res.status(200).json({
+                status:res.statusCode,
+                data:{
+                    success:true,
+                    allrequests:allrequests.inviteRequest
+                }
+            })
+        } catch (error) {
+            next(error)
+        }
+     }
  }
  module.exports={
      UserController:new UserController()
