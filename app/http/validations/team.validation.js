@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+const { body, param } = require("express-validator");
 
 function createTeamValidation(){
     return[
@@ -12,4 +12,19 @@ function createTeamValidation(){
         
     ]
 }
-module.exports={createTeamValidation}
+function ivniteUserToTeamValidation(){
+    return[
+        //name filed validation
+        param("teamID").notEmpty().withMessage("id of the team in not exist")
+        .isMongoId().withMessage("team is not found"),
+        //description filed validation
+        param("invitedPerson").notEmpty().withMessage("person id is not exist")
+        .isMongoId().withMessage("person is not found"),
+        //tages validation
+        
+    ]
+}
+module.exports={
+    createTeamValidation,
+    ivniteUserToTeamValidation
+}
