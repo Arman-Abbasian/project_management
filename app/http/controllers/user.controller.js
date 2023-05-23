@@ -93,6 +93,50 @@ class UserController{
             next(error)
         }
      }
+     async getInvitingRquestsByStatus(req,res,next){
+        const userID=req.user._id;
+        const {status}=req.params
+        const requests=await UserModel.aggregate([
+            {
+                $match:{_id:userID}
+            },
+            {
+                $project:
+                {
+                    inviteRequest:1,
+                    _id:0,
+                    inviteRequest:{
+                        $filter:{
+                            input:"$inviteRequest",
+                            as:"request",
+                            cond:{
+                                $eq:["$$request.status",status]
+                            }
+                        }
+                    }
+                }
+            }
+        ]);
+        res.status(200).json({
+            status:res.statusCode,
+            data:{
+                success:true,
+                requests:requests[0].inviteRequest || [],
+                message:"status fetched successfully"
+            }
+        })
+    }
+    async changeReuestStatus(req,res,next){
+        try {
+            const userID=req.user._id;
+            const {id,status}=req.params;
+            const request=await UserModel.findOne({"inviteRequest._id":id})
+            if(!request) throw {status:400,message:"request not found"}
+            const selectedRequest=request.find(item=>item._id==id)
+        } catch (error) {
+            next(error)
+        }
+    }
  }
  module.exports={
      UserController:new UserController()

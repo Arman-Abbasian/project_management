@@ -1,4 +1,4 @@
-const {body}=require('express-validator');
+const {body, param}=require('express-validator');
 const path=require("path")
 
 function registerValidator(){
@@ -63,4 +63,17 @@ function userProfileImageValidation(){
         
     ] 
 }
-module.exports={registerValidator,updateUserValidation,userProfileImageValidation}
+function statusValidation(){
+    return[
+        param("status").notEmpty().withMessage("please enter the status").custom((value,{req})=>{
+            if(!["pending","accepted","rejected"].includes(value.toLowerCase())) throw "status is wrong";
+            return true;
+        })
+    ]
+}
+module.exports={
+    registerValidator,
+    updateUserValidation,
+    userProfileImageValidation,
+    statusValidation
+}
