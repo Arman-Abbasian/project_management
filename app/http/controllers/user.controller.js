@@ -130,9 +130,23 @@ class UserController{
         try {
             const userID=req.user._id;
             const {id,status}=req.params;
-            const request=await UserModel.findOne({"inviteRequest._id":id})
+            const request=await UserModel.findOne({_id:userID,"inviteRequest._id":id})
+            console,log(request)
             if(!request) throw {status:400,message:"request not found"}
-            const selectedRequest=request.find(item=>item._id==id)
+            const selectedRequest=request.inviteRequest.find(item=>item._id==id)
+            console.log(selectedRequest)
+           if (selectedRequest.status!=="pending") throw {status:400,message:"condition of request already certained"}
+           const chageCondition=await UserModel.findOneAndUpdate({_id:userID,"inviteRequest._id":id},{
+            $set:{"inviteRequest.$.status":status} 
+           })
+           if(chageCondition.modifiedCount==0) throw {status:400,message:"server error"}
+           res.status(200).json({
+            status:res.statusCode,
+            data:{
+                success:true,
+                message:"request condition changed successfully"
+            }
+           })
         } catch (error) {
             next(error)
         }
