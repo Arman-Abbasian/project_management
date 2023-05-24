@@ -1,6 +1,6 @@
 const {Router}=require("express");
 const { checkUserToken } = require("../http/middlewares/checkUserToken");
-const { createTeamValidation, ivniteUserToTeamValidation } = require("../http/validations/team.validation");
+const { createTeamValidation, ivniteUserToTeamValidation, editTeamValidation } = require("../http/validations/team.validation");
 const { expressValidator } = require("../http/middlewares/expressValidator");
 const { TeamController } = require("../http/controllers/team.controller");
 const { mongoIdValidation } = require("../http/validations/public");
@@ -9,6 +9,7 @@ router.post("/create",checkUserToken,createTeamValidation(),expressValidator,Tea
 router.get("/getAllTeams",checkUserToken,TeamController.getAllTeams)
 router.get("/me",checkUserToken,TeamController.getMyTeams)
 router.get("/invite/:teamID/:invitedPerson",checkUserToken,ivniteUserToTeamValidation(),expressValidator,TeamController.inviteUserToTeam)
+router.put("/edit/:id",checkUserToken,mongoIdValidation(),expressValidator,editTeamValidation(),expressValidator,TeamController.editTeam)
 router.get("/:id",checkUserToken,mongoIdValidation(),expressValidator,TeamController.getTeamById)
 router.delete("/:id",checkUserToken,mongoIdValidation(),expressValidator,TeamController.deleteTeamById)
 module.exports={

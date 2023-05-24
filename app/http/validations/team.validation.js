@@ -1,5 +1,5 @@
 const { body, param } = require("express-validator");
-
+const vorbidenValues=[""," ",0,NaN,undefined,null,"0"]
 function createTeamValidation(){
     return[
         //name filed validation
@@ -24,7 +24,27 @@ function ivniteUserToTeamValidation(){
         
     ]
 }
+function editTeamValidation(){
+    return[
+        //name filed validation
+        body("name").optional().notEmpty().withMessage("name of the team in not exist")
+        .isLength({min:3,max:20}).withMessage("the name of team must be between 3 an 20 character")
+        .custom((value,{req})=>{
+            if(vorbidenValues.includes(value)) throw "name format is not true"
+            return true
+        }),
+        //description filed validation
+        body("description").optional().notEmpty().withMessage("description is not exist")
+        .isLength({min:20,max:50}).withMessage("the desctiption of tean must be between 20 an 50 character")
+        .custom((value,{req})=>{
+            if(vorbidenValues.includes(value)) throw "description format is not true"
+            return true
+        }),
+        
+    ]
+}
 module.exports={
     createTeamValidation,
-    ivniteUserToTeamValidation
+    ivniteUserToTeamValidation,
+    editTeamValidation
 }

@@ -127,6 +127,31 @@ class TeamController{
         next(error)
       } 
  }
+ async editTeam(req,res,next){
+    try {
+        const userID=req.user._id;
+        const teamID=req.params.id;
+        const team=await TeamtModel.findOne({_id:teamID,owner:userID});
+        if(!team) throw {status:400,message:"team not found"}
+        const {name,description}=req.body;
+        const updatedData={name,description}
+        if(!name) delete updatedData.name;
+        if(!description) delete updatedData.description
+        if(Object.keys(updatedData).length===0) throw {status:400,message:"no data sent to update"}
+        const updateTeam=await TeamtModel.updateOne({_id:teamID},{$set:updatedData})
+        if(updateTeam.modifiedCount===0) throw {status:500,message:"server error"}
+        res.status(200).json({
+            status:res.statusCode,
+            data:{
+                success:true,
+                message:"data updated successfully"
+            }
+        })
+
+    } catch (error) {
+        next(error)
+    }
+ }
 }
  module.exports={
      TeamController:new TeamController()
