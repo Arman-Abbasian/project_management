@@ -25,7 +25,40 @@ class TeamController{
     }
     async getAllTeams(req,res,next){
         const owner=req.user._id;
-        const teams=await TeamtModel.find({owner:owner})
+        const teams=await TeamtModel.aggregate([
+            {
+                $match:{}
+            },
+            {
+                $lookup:
+                {
+                    from:"users",
+                    localField:"owner",
+                    foreignField:"_id",
+                    as:"owner"
+                }
+            },
+                {
+                    $project:
+                    {
+                        "owner._id":0,
+                        "owner.password":0,
+                        "owner.mobile":0,
+                        "owner.email":0,
+                        "owner.pssword":0,
+                        "owner.roles":0,
+                        "owner.teams":0,
+                        "owner.createdAt":0,
+                        "owner.updatedAt":0,
+                        "owner.__v":0,
+                        "owner.token":0,
+                        "owner.profile_image":0
+                    }
+                },
+                {
+                    $unwind:"$owner"
+                }
+        ])
         if(!teams) throw {status:404,message:"could not find any team"}
         res.status(200).json({
             status:res.statusCode,
